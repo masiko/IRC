@@ -1,1 +1,5 @@
 # IRC
+
+Intelligent
+Robot
+Contest
