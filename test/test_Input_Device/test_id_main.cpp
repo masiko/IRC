@@ -12,7 +12,7 @@ ServoControl s1(dp11);
 int main() {
     char flag = 0;
 	float rang = .0f;
-	float min_rang = 100.0f;
+	float min_rang = 1.0f;
 	int min_direction = 0;
     while(1) {
         led1 = 1;
@@ -35,20 +35,24 @@ int main() {
 		//PSD input
 			s1.setPos(900 + i*10);
 			wait(0.05);
-			rang = psd1;
+			rang = psd2;
 			if(min_rang >= rang) {
 				min_direction = s1.readPos();
 				min_rang = rang; 
 				led2 = 1;
-				wait(1);
+				wait(0.1);
+				led2 = 0;
 			}
 		}
 		s1.setPos(min_direction);
 		led2 = 1;
-		wait(1);
+		wait(0.5);
 		led2 = 0;
+		s1.setPos(900 + (int)(1200.0f*min_rang));
+		wait(1);
 		s1.setPos(1500);
-		min_rang = 100.0f;
+		rang = .0f;
+		min_rang = 1.0f;
 		min_direction = .0f;
 		/*
 		GWS S35 STD srvo
