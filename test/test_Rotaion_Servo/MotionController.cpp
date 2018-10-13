@@ -1,29 +1,30 @@
+#include"cmath"
 #include"MotionController.h"
 
 MotionController::MotionController(float itv, float j, float t, float r) {
-	CONTROLLED_INTERVAL = itv;
+	CONTROL_INTERVAL = itv;
 	MAX_JERK = j;
-	MAX_DOMG = (MAX_JERK*CONTROL_INTERVAL^3)/3 * 2/t;
+	MAX_DOMG = (MAX_JERK*powf(CONTROL_INTERVAL,3))/3 * 2/t;
 	TRACK = t;
 	RADIUS = r;
-	v0 =
-	omg0 =
-	acc0 =
-	wl0 =
-	wl0 = 0;
+	v0 = .0;
+	omg0 = .0;
+	acc0 = .0;
+	wl0 = .0;
+	wl0 = .0;
 	resetflag = false;
-	v1 =
-	omg1 =
-	acc1 =
-	wr1 =
-	wl1 = 0; 
+	v1 = .0;
+	omg1 = .0;
+	acc1 = .0;
+	wr1 = .0;
+	wl1 = .0; 
 }
 
 bool MotionController::CulMotion(float iv, float iomg) {
 	v1 = iv;
-	omg1 = ipmg;
+	omg1 = iomg;
 	CulTargetMotion();
-	return 0;
+	return false;
 }
 
 bool MotionController::CulTargetMotion() {
@@ -33,8 +34,8 @@ bool MotionController::CulTargetMotion() {
 	dacc = (acc1 - acc0) / CONTROL_INTERVAL;
 	domg = omg1 - omg0;
 
-	v = CulLinearTrasientMotion(dacc);
-	omg = CulAngularTrasientMotion(domg);
+	v = CulLinearTransientMotion(dacc);
+	omg = CulAngularTransientMotion(domg);
 
 	float deno = 4*M_PI*RADIUS;
 	wr1 = ( TRACK*omg + 2*v) / deno;
@@ -42,17 +43,17 @@ bool MotionController::CulTargetMotion() {
 	return false;
 }
 
-float MotionController::CulLinearTrasientMotion(float dacc) {
+float MotionController::CulLinearTransientMotion(float dacc) {
 	if( -MAX_JERK < dacc && dacc < MAX_JERK )	return v1;
 	float signe = (dacc)>=0 ? 1.0 : -1.0;
-	float tv1 = signe*MAX_JERK*CONTROL_INTERVAL^2 + acc0*CONTROL_INTERVAL + v0;
+	float tv1 = signe*MAX_JERK*powf(CONTROL_INTERVAL,2) + acc0*CONTROL_INTERVAL + v0;
 	return tv1;
 }
 
-float MotionController::CulAngularTrasientMotion(float domg) {
+float MotionController::CulAngularTransientMotion(float domg) {
 	if( -MAX_DOMG < domg && domg < MAX_DOMG )	return omg1;
 	float signe = (domg)>=0 ? 1.0 : -1.0;
-	float tomg1 = signal*MAX_DOMG;
+	float tomg1 = signe*MAX_DOMG;
 	return tomg1;
 }
 

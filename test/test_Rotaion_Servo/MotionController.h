@@ -1,5 +1,4 @@
 #include<iostream>
-#include"Servo_Controller.h"
 
 class MotionController{
 private:
@@ -13,7 +12,7 @@ private:
 //Current values
 	float v0;		// [m/s]
 	float omg0;		// [(rad)/s]
-	float acc0		// [m/s^2]
+	float acc0;		// [m/s^2]
 	float wr0;		// [rps]
 	float wl0;		// [rps]
 	bool resetflag;
@@ -30,17 +29,17 @@ public:
 		MAX_DOMG = 0.179;
 		TRACK = 0.12;
 		RADIUS = 0.05;
-		v0 =
-		omg0 =
-		acc0 =
-		wl0 =
-		wl0 = 0;
+		v0 = .0;
+		omg0 = .0;
+		acc0 = .0;
+		wl0 = .0;
+		wl0 = .0;
 		resetflag = false;
-		v1 =
-		omg1 =
-		acc1 =
-		wr1 =
-		wl1 = 0;
+		v1 = .0;
+		omg1 = .0;
+		acc1 = .0;
+		wr1 = .0;
+		wl1 = .0;
 	};
 	MotionController(float itv, float j, float t, float r);
 	~MotionController(){};

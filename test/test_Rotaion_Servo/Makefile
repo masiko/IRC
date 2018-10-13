@@ -47,6 +47,7 @@ PROJECT := test_Rotaion_Servo
 # Objects and Paths
 
 OBJECTS += test_rs_main.o
+OBJECTS += MotionController.o
 
  SYS_OBJECTS += mbed/TARGET_LPC1114/TOOLCHAIN_GCC_ARM/analogin_api.o
  SYS_OBJECTS += mbed/TARGET_LPC1114/TOOLCHAIN_GCC_ARM/cmsis_nvic.o
@@ -187,6 +188,9 @@ ASM_FLAGS += -D__MBED_CMSIS_RTOS_CM
 ASM_FLAGS += -DARM_MATH_CM0
 ASM_FLAGS += -D__CMSIS_RTOS
 ASM_FLAGS += -I../.
+
+ASM_FLAGS += -I../MotionController
+
 ASM_FLAGS += -I../mbed/.
 ASM_FLAGS += -I../mbed/TARGET_LPC1114
 ASM_FLAGS += -I../mbed/TARGET_LPC1114/TARGET_NXP
