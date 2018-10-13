@@ -12,6 +12,7 @@ public:
     int setPos(int);
     int setPulseWidth(int);
     void setPulse();
+	int readPos();
 };
 
 ServoControl::ServoControl(PinName pin) : _pin(pin) {
@@ -40,4 +41,7 @@ void ServoControl::setPulse(){
     _pin = 0;
 }
 
+int ServoControl::readPos(){
+	return pos;
+}
 

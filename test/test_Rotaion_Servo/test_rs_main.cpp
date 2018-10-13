@@ -31,7 +31,7 @@ int main() {
         s15.setPos(1800);
         s16.setPos(1800);
         wait(1);
-*/
+
 		for(int i=0; i<120; i++) {
 			led1 = 0;
 			led2 = 1;
@@ -43,6 +43,7 @@ int main() {
 			led2 = 0;
 			wait(0.05);
 		}
+		*/
 		/*
 		GWS S35 STD srvo
 		  900~1500: Clockwise
