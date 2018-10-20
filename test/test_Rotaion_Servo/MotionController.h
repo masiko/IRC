@@ -1,5 +1,3 @@
-#include<iostream>
-
 class MotionController{
 private:
 //Control Parameters
@@ -28,7 +26,7 @@ public:
 		MAX_JERK = 1.6;
 		MAX_DOMG = 0.179;
 		TRACK = 0.12;
-		RADIUS = 0.05;
+		RADIUS = 0.025;
 		v0 = .0;
 		omg0 = .0;
 		acc0 = .0;
@@ -48,6 +46,7 @@ public:
 	bool CulTargetMotion();
 	float CulLinearTransientMotion(float dacc);
 	float CulAngularTransientMotion(float domg);
+	bool UpdateCv(float tv, float tomg);
 	void SetCv(float vec[5]);
 	void SetTv(float vec[5]);
 	void SetCv(char No, float val);	//0: v0, 1: omg0, 2: acc0, 3: wr0, 4: wl0

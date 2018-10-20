@@ -1,10 +1,11 @@
+#include<stdio.h>
 #include"cmath"
 #include"MotionController.h"
 
 MotionController::MotionController(float itv, float j, float t, float r) {
 	CONTROL_INTERVAL = itv;
 	MAX_JERK = j;
-	MAX_DOMG = (MAX_JERK*powf(CONTROL_INTERVAL,3))/3 * 2/t;
+	MAX_DOMG = (MAX_JERK*pow((double)CONTROL_INTERVAL,3.0))/3.0 * 2.0/t;
 	TRACK = t;
 	RADIUS = r;
 	v0 = .0;
@@ -23,6 +24,9 @@ MotionController::MotionController(float itv, float j, float t, float r) {
 bool MotionController::CulMotion(float iv, float iomg) {
 	v1 = iv;
 	omg1 = iomg;
+
+	printf("v1=%.2f, omg1=%.2f/", v1, omg1);
+
 	CulTargetMotion();
 	return false;
 }
@@ -34,19 +38,25 @@ bool MotionController::CulTargetMotion() {
 	dacc = (acc1 - acc0) / CONTROL_INTERVAL;
 	domg = omg1 - omg0;
 
+	printf("acc1=%.2f, dacc=%.2f/", acc1, dacc);
+
 	v = CulLinearTransientMotion(dacc);
 	omg = CulAngularTransientMotion(domg);
+
+	printf("v=%.5f, omg=%.5f/", v, omg);
 
 	float deno = 4*M_PI*RADIUS;
 	wr1 = ( TRACK*omg + 2*v) / deno;
 	wl1 = (-TRACK*omg + 2*v) / deno;
+
+	UpdateCv(v,omg);
 	return false;
 }
 
 float MotionController::CulLinearTransientMotion(float dacc) {
 	if( -MAX_JERK < dacc && dacc < MAX_JERK )	return v1;
 	float signe = (dacc)>=0 ? 1.0 : -1.0;
-	float tv1 = signe*MAX_JERK*powf(CONTROL_INTERVAL,2) + acc0*CONTROL_INTERVAL + v0;
+	float tv1 = signe*MAX_JERK*pow((double)CONTROL_INTERVAL,2.0) + acc0*CONTROL_INTERVAL + v0;
 	return tv1;
 }
 
@@ -55,6 +65,16 @@ float MotionController::CulAngularTransientMotion(float domg) {
 	float signe = (domg)>=0 ? 1.0 : -1.0;
 	float tomg1 = signe*MAX_DOMG;
 	return tomg1;
+}
+
+bool MotionController::UpdateCv(float tv, float tomg) {
+	if(resetflag)	return true;
+	acc0 = tv - v0;
+	v0 = tv;
+	omg0 = tomg;
+	wr0 = wr1;
+	wl0 = wl1;
+	return false;
 }
 
 void MotionController::SetCv(float vec[5]) {
