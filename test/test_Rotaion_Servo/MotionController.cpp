@@ -1,4 +1,6 @@
+#ifdef TEST_MC
 #include<stdio.h>
+#endif
 #include"cmath"
 #include"MotionController.h"
 
@@ -24,9 +26,9 @@ MotionController::MotionController(float itv, float j, float t, float r) {
 bool MotionController::CulMotion(float iv, float iomg) {
 	v1 = iv;
 	omg1 = iomg;
-
+#ifdef TEST_MC
 	printf("v1=%.2f, omg1=%.2f/", v1, omg1);
-
+#endif
 	CulTargetMotion();
 	return false;
 }
@@ -37,14 +39,14 @@ bool MotionController::CulTargetMotion() {
 	acc1 = (v1 - v0) / CONTROL_INTERVAL;
 	dacc = (acc1 - acc0) / CONTROL_INTERVAL;
 	domg = omg1 - omg0;
-
+#ifdef TEST_MC
 	printf("acc1=%.2f, dacc=%.2f/", acc1, dacc);
-
+#endif
 	v = CulLinearTransientMotion(dacc);
 	omg = CulAngularTransientMotion(domg);
-
+#ifdef TEST_MC
 	printf("v=%.5f, omg=%.5f/", v, omg);
-
+#endif
 	float deno = 4*M_PI*RADIUS;
 	wr1 = ( TRACK*omg + 2*v) / deno;
 	wl1 = (-TRACK*omg + 2*v) / deno;

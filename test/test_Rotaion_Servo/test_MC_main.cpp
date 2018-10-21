@@ -1,6 +1,8 @@
 #include<stdio.h>
 #include"MotionController.h"
 
+#define TEST_MC (1)
+
 int main(){
 	MotionController mc;
 
